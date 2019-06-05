@@ -1,0 +1,90 @@
+---
+title: "Customer Segmentation"
+author: "Árpád Tóth"
+date: '2019 05 28 '
+output: html_document
+highlight: pygments
+theme: spacelab
+df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Import libraries
+
+```{r}
+library(data.table)
+library(tidyverse)
+```
+
+
+
+## Importing 
+
+I import directly the raw file from github.
+
+```{r}
+customers <- fread("https://raw.githubusercontent.com/SteffiPeTaffy/machineLearningAZ/master/Machine%20Learning%20A-Z%20Template%20Folder/Part%204%20-%20Clustering/Section%2025%20-%20Hierarchical%20Clustering/Mall_Customers.csv")
+
+
+```
+
+## Let!s explore the data
+
+```{r}
+glimpse(customers)
+summary(customers)
+colSums(is.na(customers))
+
+
+```
+
+
+There is no NA data. Cool! Then dive into clustering.
+
+## Plot 3D 
+
+```{r}
+library(plotly)
+
+customers$Genre <- as.factor(customers$Genre)
+
+names(customers) <- c('id', 'genre', 'age', 'annual_income', 'spending_score')
+customers <- customers %>% select(-id)
+
+str(customers)
+
+p <- plot_ly(customers, x = ~age, y = ~annual_income, z = ~spending_score, color = ~genre, colors = c('#BF382A', '#0C4B8E')) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = 'age'),
+                     yaxis = list(title = 'annual_income'),
+                     zaxis = list(title = 'spending_score')))
+
+
+p
+```
+
+
+## Implementing K-means
+
+
+
+```{r pressure, echo=FALSE}
+set.seed(20)
+clusters <- kmeans(customers[,2:4], 5)
+customers$cluster <- as.factor(clusters$cluster)
+
+p2 <- plot_ly(customers, x = ~age, y = ~annual_income, z = ~spending_score, color = ~cluster, colors = c('#BF382A', '#0C4B8E')) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = 'age'),
+                     yaxis = list(title = 'annual_income'),
+                     zaxis = list(title = 'spending_score')))
+
+
+p2
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

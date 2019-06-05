@@ -49,7 +49,7 @@ There is no NA data. Cool! Then dive into clustering.
 
 ## Plot 3D 
 
-```{r}
+```{r first, echo=TRUE}
 library(plotly)
 
 customers$Genre <- as.factor(customers$Genre)
@@ -74,7 +74,7 @@ p
 
 
 
-```{r pressure, echo=FALSE}
+```{r pressure, echo=TRUE}
 set.seed(20)
 clusters <- kmeans(customers[,2:4], 5)
 customers$cluster <- as.factor(clusters$cluster)

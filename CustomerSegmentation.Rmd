@@ -2,7 +2,9 @@
 title: "Customer Segmentation"
 author: "Árpád Tóth"
 date: '2019 05 28 '
-output: html_document
+output: 
+  html_document:
+    keep_md: true
 highlight: pygments
 theme: spacelab
 df_print: paged
